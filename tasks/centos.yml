@@ -1,0 +1,61 @@
+# tasks file
+
+- name: Copy mongodb repository 
+  copy:
+    src: files/mongodb-org-4.2.repo
+    dest: /etc/yum.repos.d/mongodb-org-4.2.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: OS custom - nproc 
+  copy:
+    src: files/20-nproc.conf
+    dest: /etc/security/limits.d/20-nproc.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: OS custom for mongo - nproc 
+  copy:
+    src: files/99-mongodb-nproc.conf
+    dest: /etc/security/limits.d/99-mongodb-nproc.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set permissive SELinux
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Lower swappiness
+  become: true
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+    state: present
+    firstmatch: yes
+  with_items:
+    - { From: '^vm.swappiness', To: 'vm.swappiness=10'}
+
+- name: Install mongodb
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - glibc
+    - mongodb-org
+
+- name: remove mongod default a file
+  file:
+     path: /etc/mongod.conf
+     state: absent
+
+- name: mongod conf copy
+  template:
+    src: mongodc.j2
+    dest: /etc/mongod.conf
+  notify:
+   - start
