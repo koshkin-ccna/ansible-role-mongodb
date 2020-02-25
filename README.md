@@ -1,6 +1,6 @@
 mongodb
 =========
-Ansible Role - MongoDB https://galaxy.ansible.com/koshkin-ccna/mongodb
+Ansible Role - MongoDB
 
 Requirements
 ------------
