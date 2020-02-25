@@ -10,9 +10,9 @@
     state: present
     filename: mongodb-org-4.0.list
  - name: Update repositories cache and install "mongodb" package
-   apt: 
-     name: mongodb-org 
-     state: present 
+   apt:
+     name: mongodb-org
+     state: present
      update_cache: true
  - name: remove a file
    file:
