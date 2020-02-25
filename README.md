@@ -23,9 +23,14 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+---
+ - hosts: vagrant-centos
+   gather_facts: true
+   become: true
+   become_user: root
+   become_method: sudo
+   roles:
+    - mongodb
 
 License
 -------
@@ -35,4 +40,4 @@ MIT
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Credits to James Kiarie https://www.tecmint.com/author/james2030kiarie/ https://www.tecmint.com/install-mongodb-in-centos-8/ 
